@@ -1,0 +1,110 @@
+<resources>
+    <string name="app_name">NUMAD18S-Michelle Lee</string>
+    <string name="long_app_name">Michelle Lee</string>
+    <string name="action_settings">Settings</string>
+
+    // About me button
+    <string name="about_label">About</string>
+    <string name="ok_label">OK</string>
+    <string name="about_title">About Me</string>
+    <string name="about_text">\
+        Name: Michelle Lee\n\
+        Email: michedlee@gmail.com\n\
+        Year: 1st\n\
+    </string>
+
+    // Generate error button
+    <string name="generate_label">Generate Error</string>
+    <string name="generate_title">Generate Error</string>
+    <string name="generate_text">\
+    </string>
+
+    // Custom dialog
+    <string name="custom_desc">Headshot Image</string>
+
+    // Dictionary
+    <string name="dictionary_title">Dictionary</string>
+
+    // Acknowledgements
+    <string name="ack_title">Acknowledgements</string>
+    <string name="ack_list">\
+        Image/Icons/Graphics:\n\
+        \n\
+        Source Code:\n\
+        - Some ideas from stackoverflow.com\n\
+    </string>
+
+    // Game Menu
+    <string name="restart_label">Restart</string>
+    <string name="main_menu_label">Main Menu</string>
+    <string name="music_on">Music On</string>
+    <string name="music_off">Music Off</string>
+
+    // Winner
+    <string name="declare_winner">%1$s is the winner</string>
+
+    // Submissions button
+    <string name="B1">B1</string>
+    <string name="B2">B2</string>
+    <string name="B3">B3</string>
+    <string name="B4">B4</string>
+    <string name="B5">B5</string>
+    <string name="B6">B6</string>
+    <string name="B7">B7</string>
+    <string name="B8">B8</string>
+    <string name="B9">B9</string>
+    <string name="B10">!!</string>
+    <string name="init_score">0</string>
+    <string name="score_header">Score:\u0020</string>
+
+    // Timer
+    <string name="timer_title">Timer:\u0020</string>
+    <string name="timerVal">0:00</string>
+    <string name="pause">Pause</string>
+    <string name="go">Go</string>
+    <string name="end">Game Over</string>
+    <string name="paused">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="start">Phase One Instructions</string>
+    <string name="instructions">\n\Instructions:\n\
+        - The Scroggle board is made up of 9 mini boards.\
+        - Within each mini board, create words of 3+ letters.\
+        - Letters must be selected in spelling order.\
+        - Click the corresponding B button to submit the word.\
+        - Unselect the letters in the order they were selected.\
+        - Points are awarded by letter similar to Scrabble.\
+        - 9-letter words formed in phase 1 are worth double points.\
+        - Each invalid word that is submitted has a penalty of -3 points (0 is the min score).\
+        - The game is 3 minutes long. The first 1.5 minutes is phase 1. The second half of the time is phase 2.\
+        - Once time runs out, the game is over.\n\
+    </string>
+
+    // Scroggle acknowledgments
+    <string name="scroggle_ack_button">Acknowledgments</string>
+    <string name="scroggle_ack_list">\
+        Sounds:\n\
+        - Music: https://freesound.org/people/ChairPepper/sounds/329754/\
+        - Click: https://freesound.org/people/RADIY/sounds/213148/\
+        - Correct: https://freesound.org/people/radian/sounds/62977/\
+        - Incorrect: https://freesound.org/people/DrMaysta/sounds/418509/\n\
+        Source Code:\n\
+        - Some ideas from stackoverflow\
+        - Timer: https://bit.ly/2I9Q8h5">\
+        - Board: Hello, Android Introduction Google's Mobile Development Platform by Ed Burnette
+    </string>
+
+    // Game over
+    <string name="final_score">\n\Your final score is\u0020</string>
+    <string name="time_left">The time left on the clock is\u0020</string>
+
+    // Phase two
+    <string name="phase_two_title">Phase Two Instructions</string>
+    <string name="phase_two_instructions">\n\Instructions:\n\
+        - Phase One is over, you are now entering Phase Two.\
+        - You will have 10 seconds to select one letter from each mini board.\
+        - Choose your letters wisely as points are now doubled for all letters and a 9 letter word is worth triple!\
+        - Likewise, an invalid word will be penalized.\
+        - You have 1.5min to create a new word from these letters.\
+        - Hit the !! button to submit your word.\
+    </string>
+</resources>

@@ -1,0 +1,31 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="TileButton">
+        <item name="android:layout_width">@dimen/tile_size</item>
+        <item name="android:layout_height">@dimen/tile_size</item>
+        <item name="android:layout_margin">@dimen/tile_margin</item>
+        <item name="android:background">@color/gray_color</item>
+        <item name="android:padding">@dimen/tile_padding</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:src">@drawable/tile</item>
+    </style>
+
+    <style name="BigTileButton">
+        <item name="android:layout_width">@dimen/big_tile_size</item>
+        <item name="android:layout_height">@dimen/big_tile_size</item>
+        <item name="android:layout_margin">@dimen/big_tile_margin</item>
+        <item name="android:background">@color/gray_color</item>
+        <item name="android:padding">@dimen/big_tile_padding</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:src">@drawable/tile</item>
+    </style>
+
+</resources>

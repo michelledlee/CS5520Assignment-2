@@ -1,0 +1,41 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".GameActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_control">
+        <Button
+            android:id="@+id/button_restart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/restart_label" />
+        <Button
+            android:id="@+id/button_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/main_menu_label" />
+        <Button
+            android:id="@+id/button_music"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/music_off"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/scroggle_ack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scroggle_ack_button"
+        android:layout_below="@id/linear_control" />
+
+
+</RelativeLayout>
