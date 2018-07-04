@@ -7,50 +7,48 @@
     android:id="@+id/submit_buttons"
     tools:context=".GameActivity">
 
-    <TextView
-        android:id="@+id/timer"
-        android:layout_width="100sp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/timerVal"
-        android:textSize="35sp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-    <Button
-        android:id="@+id/btn_pause"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/top_controls"
         android:layout_width="wrap_content"
-        android:text="@string/pause"
-        android:layout_toRightOf="@id/timer"
-        android:layout_toEndOf="@id/timer"/>
+        android:layout_height="wrap_content"
+        android:layout_above="@id/grid_above">
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/timerVal"
+            android:textSize="35sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+        <Button
+            android:id="@+id/btn_pause"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/pause"
+            android:layout_toRightOf="@id/timer"
+            android:layout_toEndOf="@id/timer"/>
 
-    <TextView
-        android:id="@+id/score_title"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/board_button"
-        android:layout_toLeftOf="@id/score"
-        android:layout_toStartOf="@id/score"
-        android:gravity="center"
-        android:text="@string/score_header"
-        android:textSize="35sp" />
+        <TextView
+            android:id="@+id/score_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/score"
+            android:layout_toStartOf="@id/score"
+            android:gravity="center"
+            android:text="@string/score_header"
+            android:textSize="35sp" />
 
-    <TextView
-        android:id="@+id/score"
-        android:layout_width="60sp"
-        android:layout_height="@dimen/board_button"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:text="@string/init_score"
-        android:textSize="35sp"/>
-<!--<GridLayout-->
-    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:id="@+id/large_board"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_gravity="center"-->
-    <!--tools:context=".GameActivity">-->
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="60sp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/init_score"
+            android:textSize="35sp"/>
+    </RelativeLayout>
+
     <GridLayout
         android:id="@+id/grid_above"
         android:layout_width="wrap_content"
@@ -234,8 +232,10 @@
     </GridLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/all_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/grid_above">
 
         <Button
@@ -302,16 +302,22 @@
 
         <Button
         android:id="@+id/B10"
-        android:layout_width="@dimen/board_button"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/B9"
-        android:visibility="invisible"
-        android:text="@string/B10" />
-
-        <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/accepted_words"
-        android:layout_below="@id/B1"/>
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:text="@string/B10" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/all_buttons"
+        android:layout_centerHorizontal="true">
+
+        <ListView
+            android:id="@+id/accepted_words"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 </RelativeLayout>

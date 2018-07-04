@@ -19,11 +19,13 @@
     <string name="generate_text">\
     </string>
 
-    // Custom dialog
+    // Main menu buttons
     <string name="custom_desc">Headshot Image</string>
-
-    // Dictionary
+    <string name="new_game_btton">New Game</string>
     <string name="dictionary_title">Dictionary</string>
+    <string name="continue_button_title">Continue</string>
+    <string name="leaderboard_title">Leaderboard</string>
+    <string name="scoreboard_title">Scoreboard</string>
 
     // Acknowledgements
     <string name="ack_title">Acknowledgements</string>
@@ -44,16 +46,16 @@
     <string name="declare_winner">%1$s is the winner</string>
 
     // Submissions button
-    <string name="B1">B1</string>
-    <string name="B2">B2</string>
-    <string name="B3">B3</string>
-    <string name="B4">B4</string>
-    <string name="B5">B5</string>
-    <string name="B6">B6</string>
-    <string name="B7">B7</string>
-    <string name="B8">B8</string>
-    <string name="B9">B9</string>
-    <string name="B10">!!</string>
+    <string name="B1">1</string>
+    <string name="B2">2</string>
+    <string name="B3">3</string>
+    <string name="B4">4</string>
+    <string name="B5">5</string>
+    <string name="B6">6</string>
+    <string name="B7">7</string>
+    <string name="B8">8</string>
+    <string name="B9">9</string>
+    <string name="B10">SUBMIT</string>
     <string name="init_score">0</string>
     <string name="score_header">Score:\u0020</string>
 
@@ -78,6 +80,8 @@
         - The game is 3 minutes long. The first 1.5 minutes is phase 1. The second half of the time is phase 2.\
         - Once time runs out, the game is over.\n\
     </string>
+    <string name="enter">Enter</string>
+    <string name="enter_name">Enter username:</string>
 
     // Scroggle acknowledgments
     <string name="scroggle_ack_button">Acknowledgments</string>
@@ -105,6 +109,47 @@
         - Choose your letters wisely as points are now doubled for all letters and a 9 letter word is worth triple!\
         - Likewise, an invalid word will be penalized.\
         - You have 1.5min to create a new word from these letters.\
-        - Hit the !! button to submit your word.\
+        - Hit the Submit button to submit your word.\
     </string>
+
+    // Firebase stuff
+    <string name="demo_app_name">FirebaseDemo</string>
+    <string name="quickstart_message">The InstanceID button logs the token to the log. The Send Notification Button sends the notification to the client device.</string>
+    <string name="send_notification">Send Notification</string>
+    <string name="log_token">Show Token</string>
+
+
+    <string name="msg_subscribed">Subscribed to high score</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+
+    <string name="go_to_fcm_demo">Cloud Messaging Example</string>
+    <string name="go_to_realtime_database_demo">Realtime Database Example</string>
+
+    <string name="username">User Name</string>
+    <string name="score">Score</string>
+
+    <string name="add5">Add 5</string>
+    <string name="send_notification_text">Send Android Notification</string>
+    <string name="subscribe_to_news">Subscribe to \"News\"</string>
+    <string name="send_message_to_news">Send Message to News Topic</string>
+    <string name="start_notification_act">Notification Example</string>
+
+    <string name="start_permissions_act">Permissions Example</string>
+
+    // Leaderboard
+    <string name="longest_word">LONGEST WORD</string>
+    <string name="rank_title">RANK</string>
+    <string name="name_title">USER NAME</string>
+    <string name="date_title">DATE</string>
+    <string name="wordscore_title">WORD SCORE</string>
+    <string name="endscore_title">GAME SCORE</string>
+    <string name="update_leaderboard">Update</string>
+    <string name="sort_score">Sort by end score</string>
+    <string name="sort_wordscore">Sort by word score</string>
+
+    // Notificaitons
+    <string name="channel_name">Word Messaging</string>
+    <string name="channel_description">Word Messaging</string>
+    <string name="default_notification_channel_id">Channel ID</string>
+
 </resources>

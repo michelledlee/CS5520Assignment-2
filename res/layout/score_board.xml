@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/score_board"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="realtimeDatabase.ScoreboardActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/update_sort2">
+        <Button
+            android:id="@+id/update_leaderboard2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/update_leaderboard" />
+        <Button
+            android:id="@+id/sort_endscore2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/sort_wordscore" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="60dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/update_sort2"
+        android:id="@+id/linearLayout2">
+        <ListView
+            android:layout_width="@dimen/rank"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:id="@+id/leaderboard_rank"/>
+        <ListView
+            android:layout_width="@dimen/name"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:id="@+id/leaderboard_name"/>
+        <ListView
+            android:layout_width="@dimen/name"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:id="@+id/leaderboard_date"/>
+        <ListView
+            android:layout_width="@dimen/score"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:id="@+id/leaderboard_score"/>
+        <ListView
+            android:layout_width="@dimen/name"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:id="@+id/leaderboard_word"/>
+        <ListView
+            android:layout_width="@dimen/score"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:id="@+id/leaderboard_wordscore"/>
+    </LinearLayout>
+
+</RelativeLayout>

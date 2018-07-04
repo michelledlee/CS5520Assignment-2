@@ -29,7 +29,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
-        android:text="Generate Error" />
+        android:text="@string/generate_title" />
 
     <Button
         android:id="@+id/dictionary_button"
@@ -38,7 +38,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
-        android:text="Dictionary"
+        android:text="@string/dictionary_title"
         android:onClick="startDictionary"/>
 
     <Button
@@ -48,7 +48,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
-        android:text="New Game"
+        android:text="@string/new_game_btton"
         android:onClick="newGame"/>
 
     <Button
@@ -58,7 +58,23 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
-        android:text="Continue"/>
+        android:text="@string/continue_button_title"/>
 
+    <Button
+        android:id="@+id/leaderboard_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:padding="@dimen/menu_button_padding"
+        android:text="@string/leaderboard_title"/>
 
+    <Button
+        android:id="@+id/scoreboard_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:padding="@dimen/menu_button_padding"
+        android:text="@string/scoreboard_title"/>
 </LinearLayout>
