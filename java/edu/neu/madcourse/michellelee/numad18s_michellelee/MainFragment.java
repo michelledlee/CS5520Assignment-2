@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.content.Context;
 
+import edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.LeaderboardActivity;
+import edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.RealtimeDatabaseActivity;
+import edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.ScoreboardActivity;
+
 
 public class MainFragment extends Fragment {
 
@@ -62,29 +66,47 @@ public class MainFragment extends Fragment {
         dictionaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) throws RuntimeException {
-                Intent dictionaryIntent = new Intent(getActivity(), TestDictionary.class);
-                startActivity(dictionaryIntent);
+            Intent dictionaryIntent = new Intent(getActivity(), TestDictionary.class);
+            startActivity(dictionaryIntent);
             }
         });
 
-        // NEW GAME BUTTON
+        // NEW GAME AND CONTINUE BUTTON
         View newGameButton = rootView.findViewById(R.id.newgame_button);  // create button view
         View continueButton = rootView.findViewById(R.id.continue_button);
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) throws RuntimeException {
-                Intent newGameIntent = new Intent(getActivity(), GameActivity.class);
-                startActivity(newGameIntent);
+            Intent newGameIntent = new Intent(getActivity(), GameActivity.class);
+            startActivity(newGameIntent);
             }
         });
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GameActivity.class);
-                intent.putExtra(GameActivity.KEY_RESTORE, true);
-                getActivity().startActivity(intent);
+            Intent intent = new Intent(getActivity(), GameActivity.class);
+            intent.putExtra(GameActivity.KEY_RESTORE, true);
+            getActivity().startActivity(intent);
             }
         });
+
+        // LEADERBOARD AND SCOREBOARD BUTTONS
+        View leaderboardButton = rootView.findViewById(R.id.leaderboard_button);  // create button view
+        View scoreboardButton = rootView.findViewById(R.id.scoreboard_button);
+        leaderboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) throws RuntimeException {
+                startActivity(new Intent(getActivity(), LeaderboardActivity.class));
+
+            }
+        });
+        scoreboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ScoreboardActivity.class));
+            }
+        });
+
 
         return rootView;
     }

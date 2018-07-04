@@ -1,13 +1,23 @@
 package edu.neu.madcourse.michellelee.numad18s_michellelee;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,20 +25,49 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+
+import edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.LeaderboardActivity;
+import edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.ScoreboardActivity;
+import edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.models.User;
+
+import static android.content.ContentValues.TAG;
+import static edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.ScoreboardActivity.getHighestScore;
+import static edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.ScoreboardActivity.highestScore;
 
 public class GameFragment extends Fragment {
     // BOARD SET UP
@@ -42,7 +81,6 @@ public class GameFragment extends Fragment {
     private Tile mEntireBoard = new Tile(this);
     private Tile mLargeTiles[] = new Tile[9];
     private Tile mSmallTiles[][] = new Tile[9][9];
-    private Tile.Owner mPlayer = Tile.Owner.X;
     private Set<Tile> mAvailable = new HashSet<Tile>();
     private int mLastLarge;
     private int mLastSmall;
@@ -87,7 +125,7 @@ public class GameFragment extends Fragment {
 
     // SCOREBOARD
     private TextView scoreBoard;            // score board
-    private int pointsScore;                // points
+    public int pointsScore;                // points
 
     // TIMER
     private AlertDialog startDialog;    // start dialog
@@ -115,6 +153,18 @@ public class GameFragment extends Fragment {
 
     // DONE TRACKER
     private boolean[] submittedTracker = {false, false, false, false, false, false, false, false, false};
+
+    // LEADERBOARD AND SCOREBOARD INFORMATION
+    public int endScore;
+    public String longestWord;
+    public int longestWordScore;
+    public int longestLength;
+    public StringBuilder userName = new StringBuilder();
+    public String userNameString;
+    private EditText usernameEntry;
+    private String token = FirebaseInstanceId.getInstance().getToken();
+    private static final String SERVER_KEY = "key=AAAAtacikow:APA91bF9wWueLW8jH2k9ob-Tl19NN1L8yH9B-37BB5ps8rx9BK2k4J4LN3YsYsEabiMvMLFllcUrrQNG8Dlhkg-CL0Z3gkvD50uDyS0OmovlwFAH2VMmyPo5axZFlnJbzqaF5c5LeUEcMBmxUAU2MJVXNpBTxGQPfA";
+    int highScore;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -163,10 +213,15 @@ public class GameFragment extends Fragment {
     public void showStartDialog(final View rootView) {
         AlertDialog.Builder startBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater startInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = startInflater.inflate(R.layout.start_screen, null);     // create view for custom dialog
+        final View dialogView = startInflater.inflate(R.layout.start_screen, null);     // create view for custom dialog
         startBuilder.setCancelable(false);
         startBuilder.setView(dialogView);    // set view to start screen layout
-        Button start = (Button) dialogView.findViewById(R.id.btn_start);
+
+        // set up username input
+        usernameEntry = (EditText) dialogView.findViewById(R.id.username_input);
+
+        // handle start button to begin the game
+        final Button start = (Button) dialogView.findViewById(R.id.btn_start);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,7 +229,30 @@ public class GameFragment extends Fragment {
                 initTimer(rootView);
             }
         });
+
+        // button to submit username
+        final Button enterUserName = (Button) dialogView.findViewById(R.id.enter_username);
+        enterUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // username information
+                userName.append(usernameEntry.getText());
+                userNameString = userName.toString();
+
+                // hide the enter button
+                enterUserName.setVisibility(View.INVISIBLE);
+
+                // text view that shows what the user has submitted their name as
+                TextView welcomeUser = (TextView) dialogView.findViewById(R.id.welcome_user);
+                welcomeUser.setText("Welcome " + userNameString + "!");
+                welcomeUser.setVisibility(View.VISIBLE);
+                start.setVisibility(View.VISIBLE);  // once user has entered user name, make start button visible
+            }
+        });
+
         startDialog = startBuilder.show();
+
     }
 
     /**
@@ -246,48 +324,48 @@ public class GameFragment extends Fragment {
             resume.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDialog.dismiss();
-                    btnPause.setEnabled(true);   // enable the pause button
+                mDialog.dismiss();
+                btnPause.setEnabled(true);   // enable the pause button
 
-                    // specify the current state is not paused
-                    isPaused = false;
+                // specify the current state is not paused
+                isPaused = false;
 
-                    // initialize a new CountDownTimer instance
-                    long millisInFuture = timeRemaining;
-                    long countDownInterval = 1000;
-                    timer = new CountDownTimer(millisInFuture, countDownInterval) {
-                        public void onTick(long millisUntilFinished) {
-                            long millis = millisUntilFinished;
+                // initialize a new CountDownTimer instance
+                long millisInFuture = timeRemaining;
+                long countDownInterval = 1000;
+                timer = new CountDownTimer(millisInFuture, countDownInterval) {
+                    public void onTick(long millisUntilFinished) {
+                        long millis = millisUntilFinished;
 
-                            if (millis >= 10000 && millis <= 11000) {                                       // if time is 10 seconds
-                                Toast.makeText(getActivity(), "FINAL COUNTDOWN", Toast.LENGTH_LONG).show();    // entering final countdown
-                            }
-
-                            // display time in minutes and seconds
-                            String text = String.format(Locale.getDefault(), "%02d:%02d",
-                                    TimeUnit.MILLISECONDS.toMinutes(millis),
-                                    TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-
-                            if (isPaused) { // pause requested
-                                cancel();
-                            } else {
-                                tView.setText(text);
-                                timeRemaining = millisUntilFinished;    // remember time remaining
-                            }
+                        if (millis >= 10000 && millis <= 11000) {                                       // if time is 10 seconds
+                            Toast.makeText(getActivity(), "FINAL COUNTDOWN", Toast.LENGTH_LONG).show();    // entering final countdown
                         }
 
-                        public void onFinish() {
-                            if (phase == 1) {
-                                phase = 2;
-                                phaseTwo();
-                            } else if (phase == 2) {
-                                gameOver(); // game over dialog
-                            }
+                        // display time in minutes and seconds
+                        String text = String.format(Locale.getDefault(), "%02d:%02d",
+                                TimeUnit.MILLISECONDS.toMinutes(millis),
+                                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
 
-                            // disable all buttons
-                            btnPause.setEnabled(false);
+                        if (isPaused) { // pause requested
+                            cancel();
+                        } else {
+                            tView.setText(text);
+                            timeRemaining = millisUntilFinished;    // remember time remaining
                         }
-                    }.start();
+                    }
+
+                    public void onFinish() {
+                        if (phase == 1) {
+                            phase = 2;
+                            phaseTwo();
+                        } else if (phase == 2) {
+                            gameOver(); // game over dialog
+                        }
+
+                        // disable all buttons
+                        btnPause.setEnabled(false);
+                    }
+                }.start();
                 }
             });
             mDialog = builder.show();
@@ -510,7 +588,7 @@ public class GameFragment extends Fragment {
     public void checkWord(int largeTile) {
         String guess = "";
         int length = 0;
-        int score = 0;
+//        int score = 0;
         boolean correct = false;                    // flag for whether the word is valid
 
         // get word string based on which button was pressed
@@ -558,24 +636,31 @@ public class GameFragment extends Fragment {
                 int bonus = 0;
                 for (char c : guess.toCharArray()) {
                     if (c == 'E' || c == 'A' || c == 'I' || c == 'O' || c == 'N' || c == 'R' || c == 'T' || c == 'L' || c == 'S') {
-                        pointsScore += 1;   // bonus for x, y, or z in word
+                        bonus += 1;
                     } else if (c == 'D' || c == 'G') {
-                        pointsScore += 2;
+                        bonus += 2;
                     } else if (c == 'B' || c == 'C' || c == 'M' || c == 'P') {
-                        pointsScore += 3;
+                        bonus += 3;
                     } else if (c == 'F' || c == 'H' || c == 'V' || c == 'W' || c == 'Y') {
-                        pointsScore += 4;
+                        bonus += 4;
                     } else if (c == 'K') {
-                        pointsScore += 5;
+                        bonus += 5;
                     } else if (c == 'J' || c == 'X') {
-                        pointsScore += 8;
+                        bonus += 8;
                     } else {
-                        pointsScore += 10;
+                        bonus += 10;
                     }
                 }
-                if (length == 9 && phase == 1) bonus += length;         // bonus for 9 letter word during phase 1
-                pointsScore += length + bonus;                          // calculate total score
-                scoreBoard.setText(""+pointsScore);                     // set scoreboard to total
+                if (length == 9 && phase == 1) bonus += length; // bonus for 9 letter word during phase 1
+                pointsScore += bonus;                           // calculate total score
+                scoreBoard.setText(""+pointsScore);             // set scoreboard to total
+
+                // save longest word information
+                if (length > longestLength) {
+                    longestLength = length;
+                    longestWord = guess;
+                    longestWordScore = bonus;
+                }
 
                 // mark as submitted in tile tacker array
                 submittedTracker[largeTile-1] = true;
@@ -583,10 +668,10 @@ public class GameFragment extends Fragment {
                 for (boolean b : submittedTracker) {
                     if (b == true) done++;
                 }
-                if (done == 9) {
-                    timer.cancel();
-                    gameOver();
-                }
+//                if (done == 9) {
+//                    timer.cancel();
+//                    gameOver();
+//                }
             }
         } else {
             correct = false;    // false if not found
@@ -606,6 +691,7 @@ public class GameFragment extends Fragment {
 //                Log.e("selected? ", allTilesInt[largeTile-1][small] == 0 ? "no" : "yes");
                 if (allTilesInt[largeTile-1][small] == 0) {     // if the tile was not selected
                     buttonList[largeTile-1][small].setText(""); // remove the letter from the button
+                    buttonList[largeTile-1][small].setClickable(false);
                 }
             }
 
@@ -746,15 +832,33 @@ public class GameFragment extends Fragment {
                     }
                 }
             });
-//            final Tile bigTile = mLargeTiles[large];                // small tile within large tile
-//            bigTile.setView(inner);
-//            inner.setBackgroundResource(R.drawable.tile_gray);
-//            bigTile.setLargeTileNo(large);
         }
 
     }
 
     public void startMiniTimer() {
+        // set buttons to unclickable and invisible
+//        Button b1 = (Button) rootView.findViewById(R.id.B1);
+//        b1.setVisibility(View.INVISIBLE);
+//        Button b2 = (Button) rootView.findViewById(R.id.B2);
+//        b2.setVisibility(View.INVISIBLE);
+//        Button b3 = (Button) rootView.findViewById(R.id.B3);
+//        b3.setVisibility(View.INVISIBLE);
+//        Button b4 = (Button) rootView.findViewById(R.id.B4);
+//        b4.setVisibility(View.INVISIBLE);
+//        Button b5 = (Button) rootView.findViewById(R.id.B5);
+//        b5.setVisibility(View.INVISIBLE);
+//        Button b6 = (Button) rootView.findViewById(R.id.B6);
+//        b6.setVisibility(View.INVISIBLE);
+//        Button b7 = (Button) rootView.findViewById(R.id.B7);
+//        b7.setVisibility(View.INVISIBLE);
+//        Button b8 = (Button) rootView.findViewById(R.id.B8);
+//        b8.setVisibility(View.INVISIBLE);
+//        Button b9 = (Button) rootView.findViewById(R.id.B9);
+//        b9.setVisibility(View.INVISIBLE);
+//        Button b10 = (Button) rootView.findViewById(R.id.B10);
+//        b10.setVisibility(View.INVISIBLE);
+
         // initialize a new CountDownTimer instance
         long millisInFuture = 10000;
         long countDownInterval = 1000;
@@ -795,36 +899,6 @@ public class GameFragment extends Fragment {
         }.start();
     }
 
-//    private void switchTurns() {
-//        mPlayer = mPlayer == Tile.Owner.X ? Tile.Owner.O : Tile
-//                .Owner.X;
-//    }
-//
-//    /**
-//     * Set owner of small tile to current player
-//     * @param large index of large tile being moved
-//     * @param small index of small tile being moved
-//     */
-//    private void makeMove(int large, int small) {
-//        mLastLarge = large;
-//        mLastSmall = small;
-//        Tile smallTile = mSmallTiles[large][small];
-//        Tile largeTile = mLargeTiles[large];
-//        smallTile.setOwner(mPlayer);                // set owner of small tile to current player
-//        setAvailableFromLastMove(small);
-//        Tile.Owner oldWinner = largeTile.getOwner();
-//        Tile.Owner winner = largeTile.findWinner(); // see if there's a winner for the board containing the small tile
-//        if (winner != oldWinner) {
-//            largeTile.setOwner(winner);
-//        }
-//        winner = mEntireBoard.findWinner();         // see if someone has won the entire board
-//        mEntireBoard.setOwner(winner);
-//        updateAllTiles();
-//        if (winner != Tile.Owner.NEITHER) {         // if someone has won
-//            ((GameActivity)getActivity()).reportWinner(winner);
-//        }
-//    }
-
     /**
      * Redraw all boards
      */
@@ -835,13 +909,15 @@ public class GameFragment extends Fragment {
         initTimer(getView());
         pointsScore = 0;
         scoreBoard.setText(""+pointsScore);
-
     }
 
     /**
      * Displays the game over dialog
      */
     public void gameOver() {
+        // save score
+        endScore = pointsScore;
+
         // game over dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -860,6 +936,8 @@ public class GameFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 gameOverDialog.dismiss();
+                doDataAddToDb();
+                dataAddAppInstance();
                 ((GameActivity) getActivity()).restartGame();
             }
         });
@@ -870,18 +948,166 @@ public class GameFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 gameOverDialog.dismiss();
+                dataAddAppInstance();
+                doDataAddToDb();
+
                 getActivity().finish();
             }
         });
         gameOverDialog = builder.show();
     }
 
+    public void doDataAddToDb() {
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-//                                    // REPLACE???
-////                        if (isAvailable(smallTile)) {
-////                            makeMove(fLarge, fSmall);
-////                            switchTurns();
-////                        }
+        // getting values from the game that was just played
+        String endScore = Integer.toString(pointsScore);
+        String mLongestWordScore = Integer.toString(longestWordScore);
+        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date());
+        Log.e(TAG, "date" + date);
+
+        // creating a new user for the database
+        User newUser = new User(userNameString, endScore, date, longestWord, mLongestWordScore);  // creating a new user object to hold that data
+
+        // add new node in database
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("users").child(userNameString).setValue(newUser);
+
+        Log.e(TAG, "pointsScore" + pointsScore);
+        Log.e(TAG, "highestScore" + highestScore);
+
+
+        // if high score is achieved, send notification
+        if (highestScore > pointsScore) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    sendMessageToNews();
+                }
+            }).start();
+        }
+    }
+
+    public void dataAddAppInstance() {
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        // getting values from the game that was just played
+        String endScore = Integer.toString(pointsScore);
+        String mLongestWordScore = Integer.toString(longestWordScore);
+        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date());
+
+        // creating a new user for the database
+        User newUser = new User(userNameString, endScore, date, longestWord, mLongestWordScore);  // creating a new user object to hold that data
+
+        // add new node in database
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child(token).child(userNameString).setValue(newUser);
+
+//        int higherScore = getHighestScore();
+        Log.e("pointsScore",  Integer.toString(pointsScore));
+//        Log.e("highestScore", Integer.toString(highestScore));
+//        Log.e("higherScore", Integer.toString(higherScore));
+
+        int highScore = getInt();
+
+        // if high score is achieved, send notification
+        if ( pointsScore > highScore) {
+            setInt("high score", pointsScore);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    sendMessageToNews();
+                }
+            }).start();
+        }
+    }
+
+    public void setInt(String key, int value){
+        SharedPreferences sp = getActivity().getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(key, value);  // key, string
+        editor.apply();
+    }
+
+    public int getInt(){
+        SharedPreferences sp = getActivity().getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        highScore = sp.getInt("high score", 0);
+        return highScore;
+    }
+
+    //    /**
+//     * Button Handler; creates a new thread that sends off a message
+//     * @param type
+//     */
+//    public void sendMessageToNews(View type) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                sendMessageToNews();
+//            }
+//        }).start();
+//    }
+
+    /**
+     * Sends a message to all other devices
+     */
+    private void sendMessageToNews(){
+        JSONObject jPayload = new JSONObject();
+        JSONObject jNotification = new JSONObject();
+        try {
+            jNotification.put("message", "Leaderboard Activity");
+            jNotification.put("body", "New high score!");
+            jNotification.put("sound", "default");
+            jNotification.put("badge", "1");
+            jNotification.put("click_action", "OPEN_ACTIVITY_1");
+
+            // Populate the Payload object.
+            // Note that "to" is a topic, not a token representing an app instance
+            jPayload.put("to", "/topics/high_score");
+            jPayload.put("priority", "high");
+            jPayload.put("notification", jNotification);
+
+            // Open the HTTP connection and send the payload
+            URL url = new URL("https://fcm.googleapis.com/fcm/send");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", SERVER_KEY);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            // Send FCM message content.
+            OutputStream outputStream = conn.getOutputStream();
+            outputStream.write(jPayload.toString().getBytes());
+            outputStream.close();
+
+            // Read FCM response.
+            InputStream inputStream = conn.getInputStream();
+            final String resp = convertStreamToString(inputStream);
+
+            Handler h = new Handler(Looper.getMainLooper());
+            h.post(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e(TAG, "run: " + resp);
+                    Toast.makeText(getActivity(),resp,Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Helper function
+     * @param is
+     * @return
+     */
+    private String convertStreamToString(InputStream is) {
+        Scanner s = new Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next().replace(",", ",\n") : "";
+    }
+
+
     /**
      * Sets up data structures
      */

@@ -12,17 +12,39 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
+
+import edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.RealtimeDatabaseActivity;
+import edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.models.User;
+
 public class GameActivity extends Activity {
     public static final String KEY_RESTORE = "key_restore";
     public static final String PREF_RESTORE = "pref_restore";
+    public static boolean activityVisible = false; // flag to determine whether activity is visible
     private GameFragment mGameFragment;
-    private Button mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        // Restore game here...
+
+        activityVisible = true; // when activity is started
+
+        // restore game here
         mGameFragment = (GameFragment) getFragmentManager().findFragmentById(R.id.fragment_game);
         boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
         if (restore) {
@@ -36,34 +58,33 @@ public class GameActivity extends Activity {
     }
 
     public void restartGame() {
+
+        activityVisible = true; // when activity is started
+
         mGameFragment.restartGame();
-    }
-
-    public void reportWinner(final Tile.Owner winner) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.declare_winner, winner));
-        builder.setCancelable(false);
-        builder.setPositiveButton(R.string.ok_label,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                });
-        final Dialog dialog = builder.create();
-        dialog.show();
-
-        // Reset the board to the initial position
-        mGameFragment.initGame();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
+        activityVisible = false; // when activity is started
+
         String gameData = mGameFragment.getState();
         getPreferences(MODE_PRIVATE).edit()
                 .putString(PREF_RESTORE, gameData)
                 .commit();
         Log.d("UT3", "state = " + gameData);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        activityVisible = true; // when activity is started
+    }
+
+    public static boolean isActivityVisible() {
+        return activityVisible;
     }
 }
