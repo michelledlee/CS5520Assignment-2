@@ -2,8 +2,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:elevation="@dimen/elevation_high"
-    android:orientation="vertical"
-    android:padding="@dimen/menu_padding">
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
@@ -77,4 +76,13 @@
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
         android:text="@string/scoreboard_title"/>
+
+    <Button
+        android:id="@+id/ack_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:padding="@dimen/menu_button_padding"
+        android:text="@string/ack_title"/>
 </LinearLayout>

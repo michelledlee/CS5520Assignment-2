@@ -32,15 +32,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_view"/>
 
-    <Button
-        android:id="@+id/ack_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:padding="@dimen/menu_button_padding"
-        android:textSize="10dp"
-        android:text="Acknowledgements"/>
-
-
+    <!--<Button-->
+        <!--android:id="@+id/ack_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center|bottom"-->
+        <!--android:padding="@dimen/menu_button_padding"-->
+        <!--android:textSize="10dp"-->
+        <!--android:text="Acknowledgements"/>-->
 
 </LinearLayout>

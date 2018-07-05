@@ -30,10 +30,15 @@
     // Acknowledgements
     <string name="ack_title">Acknowledgements</string>
     <string name="ack_list">\
-        Image/Icons/Graphics:\n\
-        \n\
+        Sounds:\n\
+        - Music: https://freesound.org/people/ChairPepper/sounds/329754/\
+        - Click: https://freesound.org/people/RADIY/sounds/213148/\
+        - Correct: https://freesound.org/people/radian/sounds/62977/\
+        - Incorrect: https://freesound.org/people/DrMaysta/sounds/418509/\n\
         Source Code:\n\
-        - Some ideas from stackoverflow.com\n\
+        - Some ideas from stackoverflow\
+        - Timer: https://bit.ly/2I9Q8h5">\
+        - Board: Hello, Android Introduction Google's Mobile Development Platform by Ed Burnette
     </string>
 
     // Game Menu
@@ -141,8 +146,8 @@
     <string name="rank_title">RANK</string>
     <string name="name_title">USER NAME</string>
     <string name="date_title">DATE</string>
-    <string name="wordscore_title">WORD SCORE</string>
-    <string name="endscore_title">GAME SCORE</string>
+    <string name="wordscore_title">POINTS</string>
+    <string name="endscore_title">SCORE</string>
     <string name="update_leaderboard">Update</string>
     <string name="sort_score">Sort by end score</string>
     <string name="sort_wordscore">Sort by word score</string>
@@ -150,6 +155,10 @@
     // Notificaitons
     <string name="channel_name">Word Messaging</string>
     <string name="channel_description">Word Messaging</string>
-    <string name="default_notification_channel_id">Channel ID</string>
+    <string name="default_notification_channel_id">fcm_default_channel</string>
+
+    // High score dialog
+    <string name="highscore_title">New High Score</string>
+    <string name="highscore_text">\Another player has achieved a new high score!</string>
 
 </resources>

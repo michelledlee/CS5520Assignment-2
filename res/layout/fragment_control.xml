@@ -30,12 +30,12 @@
             android:text="@string/music_off"/>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/scroggle_ack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/scroggle_ack_button"
-        android:layout_below="@id/linear_control" />
+    <!--<Button-->
+        <!--android:id="@+id/scroggle_ack"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/scroggle_ack_button"-->
+        <!--android:layout_below="@id/linear_control" />-->
 
 
 </RelativeLayout>
