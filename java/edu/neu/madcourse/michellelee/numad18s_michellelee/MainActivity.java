@@ -2,6 +2,9 @@ package edu.neu.madcourse.michellelee.numad18s_michellelee;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -34,15 +37,13 @@ import edu.neu.madcourse.michellelee.numad18s_michellelee.firebaseMessaging.Word
 
 public class MainActivity extends AppCompatActivity {
 
+    private BroadcastReceiver mReceiver;
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // SET UP TOOLBAR
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
 
         // SETTING UP VERSION NUMBER AND VERSION CODE DISPLAY
         try {
@@ -97,67 +98,9 @@ public class MainActivity extends AppCompatActivity {
         imeiText.setText("IMEI: " + deviceUniqueIdentifier);
 
 
-        // SUBSCRIBE APP TO HIGH_SCORE SERVICE
-        FirebaseMessaging.getInstance().subscribeToTopic("high_score");
-        String msg = getString(R.string.msg_subscribed);
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        // CREATE NOTIFICATION CHANNEL
-//        createNotificationChannel();
-//
-//        // BROADCAST MAANGER
-//        LocalBroadcastManager.getInstance(this).registerReceiver(mHandler, new IntentFilter("edu.neu.madcourse.michellelee.numad18s_michellelee-FCMMESSAGE"));
+        // FIREBASE
+        FirebaseMessaging.getInstance().subscribeToTopic("high_score"); // subscribing app to notifications
 
     }
 
-//    private BroadcastReceiver mHandler = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            Toast.makeText(MainActivity.this, "FINAL COUNTDOWN", Toast.LENGTH_LONG).show();
-//            String title = intent.getStringExtra("title");
-//            String message = intent.getStringExtra("message");
-//
-//            Intent mIntent = new Intent(MainActivity.this, MainActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//
-//            PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0 /* Request code */, intent,
-//                    PendingIntent.FLAG_ONE_SHOT);
-//
-//            Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.this)
-//                    .setSmallIcon(R.drawable.foo)
-//                    .setContentTitle(title)
-//                    .setContentText(message)
-//                    .setAutoCancel(true)
-//                    .setSound(defaultSoundUri)
-//                    .setContentIntent(pendingIntent);
-//
-//            NotificationManager notificationManager =
-//                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-//
-//        }
-//    };
-
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mHandler);
-//    }
-//
-//    private void createNotificationChannel() {
-//        // Create the NotificationChannel, but only on API 26+ because
-//        // the NotificationChannel class is new and not in the support library
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            CharSequence name = getString(R.string.channel_name);
-//            String description = getString(R.string.channel_description);
-//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-//            NotificationChannel channel = new NotificationChannel(description, name, importance);
-//            channel.setDescription(description);
-//            // Register the channel with the system; you can't change the importance
-//            // or other notification behaviors after this
-//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-//            notificationManager.createNotificationChannel(channel);
-//        }
-//    }
 }

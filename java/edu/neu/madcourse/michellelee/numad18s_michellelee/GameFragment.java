@@ -165,9 +165,11 @@ public class GameFragment extends Fragment {
     private String token = FirebaseInstanceId.getInstance().getToken();
     private static final String SERVER_KEY = "key=AAAAtacikow:APA91bF9wWueLW8jH2k9ob-Tl19NN1L8yH9B-37BB5ps8rx9BK2k4J4LN3YsYsEabiMvMLFllcUrrQNG8Dlhkg-CL0Z3gkvD50uDyS0OmovlwFAH2VMmyPo5axZFlnJbzqaF5c5LeUEcMBmxUAU2MJVXNpBTxGQPfA";
     int highScore;
+    public static int isActive = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setActive("active", 0);
         super.onCreate(savedInstanceState);
         setRetainInstance(true);    // retain this fragment across configuration changes.
         initGame();
@@ -196,6 +198,27 @@ public class GameFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Shared preferences to remember high score for this instance of the game. This sets the high score.
+     * @param key
+     * @param value
+     */
+    public void setActive(String key, int value){
+        SharedPreferences sp = this.getActivity().getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(key, value);  // key, string
+        editor.apply();
+    }
+
+    /**
+     * Shared
+     * @return
+     */
+    public int getActive(){
+        SharedPreferences sp = this.getActivity().getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        isActive = sp.getInt("active", 1);
+        return isActive;
+    }
     /**
      * Initialize music and sounds for game
      */
@@ -837,28 +860,6 @@ public class GameFragment extends Fragment {
     }
 
     public void startMiniTimer() {
-        // set buttons to unclickable and invisible
-//        Button b1 = (Button) rootView.findViewById(R.id.B1);
-//        b1.setVisibility(View.INVISIBLE);
-//        Button b2 = (Button) rootView.findViewById(R.id.B2);
-//        b2.setVisibility(View.INVISIBLE);
-//        Button b3 = (Button) rootView.findViewById(R.id.B3);
-//        b3.setVisibility(View.INVISIBLE);
-//        Button b4 = (Button) rootView.findViewById(R.id.B4);
-//        b4.setVisibility(View.INVISIBLE);
-//        Button b5 = (Button) rootView.findViewById(R.id.B5);
-//        b5.setVisibility(View.INVISIBLE);
-//        Button b6 = (Button) rootView.findViewById(R.id.B6);
-//        b6.setVisibility(View.INVISIBLE);
-//        Button b7 = (Button) rootView.findViewById(R.id.B7);
-//        b7.setVisibility(View.INVISIBLE);
-//        Button b8 = (Button) rootView.findViewById(R.id.B8);
-//        b8.setVisibility(View.INVISIBLE);
-//        Button b9 = (Button) rootView.findViewById(R.id.B9);
-//        b9.setVisibility(View.INVISIBLE);
-//        Button b10 = (Button) rootView.findViewById(R.id.B10);
-//        b10.setVisibility(View.INVISIBLE);
-
         // initialize a new CountDownTimer instance
         long millisInFuture = 10000;
         long countDownInterval = 1000;
@@ -1003,11 +1004,7 @@ public class GameFragment extends Fragment {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child(token).child(userNameString).setValue(newUser);
 
-//        int higherScore = getHighestScore();
-        Log.e("pointsScore",  Integer.toString(pointsScore));
-//        Log.e("highestScore", Integer.toString(highestScore));
-//        Log.e("higherScore", Integer.toString(higherScore));
-
+        // get this device's all time high score for comparison
         int highScore = getInt();
 
         // if high score is achieved, send notification
@@ -1022,6 +1019,11 @@ public class GameFragment extends Fragment {
         }
     }
 
+    /**
+     * Shared preferences to remember high score for this instance of the game. This sets the high score.
+     * @param key
+     * @param value
+     */
     public void setInt(String key, int value){
         SharedPreferences sp = getActivity().getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
@@ -1029,24 +1031,15 @@ public class GameFragment extends Fragment {
         editor.apply();
     }
 
+    /**
+     * Shared
+     * @return
+     */
     public int getInt(){
         SharedPreferences sp = getActivity().getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
         highScore = sp.getInt("high score", 0);
         return highScore;
     }
-
-    //    /**
-//     * Button Handler; creates a new thread that sends off a message
-//     * @param type
-//     */
-//    public void sendMessageToNews(View type) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                sendMessageToNews();
-//            }
-//        }).start();
-//    }
 
     /**
      * Sends a message to all other devices

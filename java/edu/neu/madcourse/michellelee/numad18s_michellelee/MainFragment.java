@@ -40,7 +40,7 @@ public class MainFragment extends Fragment {
             Drawable myShot = getResources().getDrawable(R.drawable.ic_headshot);    // make drawable from headshot image
             ImageView pic = (ImageView) dialogView.findViewById(R.id.headshot_image);   // set imageview ID
             pic.setImageDrawable(myShot);   // set imageview picture to drawable
-            builder.setView(dialogView);    // set view to custome dialog
+            builder.setView(dialogView);    // set view to custom dialog
             builder.setCancelable(false);
             builder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
                         @Override
@@ -77,6 +77,7 @@ public class MainFragment extends Fragment {
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) throws RuntimeException {
+            GameFragment.isActive = 0;
             Intent newGameIntent = new Intent(getActivity(), GameActivity.class);
             startActivity(newGameIntent);
             }
@@ -84,6 +85,7 @@ public class MainFragment extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            GameFragment.isActive = 0;
             Intent intent = new Intent(getActivity(), GameActivity.class);
             intent.putExtra(GameActivity.KEY_RESTORE, true);
             getActivity().startActivity(intent);
@@ -107,7 +109,26 @@ public class MainFragment extends Fragment {
             }
         });
 
+        // ACKNOWLEDGEMENTS
+        View acknowledgmentsButton = rootView.findViewById(R.id.ack_button);  // create button view
+        acknowledgmentsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View dialogView = inflater.inflate(R.layout.scroggle_ack, null);     // create view for custom dialog
+                builder.setCancelable(false);
+                builder.setView(dialogView);    // set view to ack dialog
+                builder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // nothing
+                    }
+                });
+                mDialog = builder.show();
+            }
+        });
         return rootView;
     }
 

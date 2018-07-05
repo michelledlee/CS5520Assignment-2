@@ -16,7 +16,7 @@ import android.widget.ToggleButton;
 
 public class ControlFragment extends Fragment {
 
-    private MediaPlayer mMediaPlayer;// for music
+    public MediaPlayer mMediaPlayer;// for music
     private AlertDialog mDialog;     // acknowledgments dialog
 
     @Override
@@ -34,6 +34,7 @@ public class ControlFragment extends Fragment {
         main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GameFragment.isActive = 1;
                 getActivity().finish();
             }
         });
@@ -41,6 +42,7 @@ public class ControlFragment extends Fragment {
         restart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GameFragment.isActive = 1;
                 ((GameActivity) getActivity()).restartGame();
             }
         });
@@ -63,31 +65,7 @@ public class ControlFragment extends Fragment {
             }
         });
 
-        // SET UP ACKNOWLEDGMENTS BUTTON
-        View ackButton = rootView.findViewById(R.id.scroggle_ack);
-
-        // determining action when clicked
-        ackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View dialogView = inflater.inflate(R.layout.scroggle_ack, null);     // create view for custom dialog
-                builder.setCancelable(false);
-                builder.setView(dialogView);    // set view to ack dialog
-                builder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // nothing
-                    }
-                });
-                mDialog = builder.show();
-            }
-        });
-
         return rootView;
     }
-
 
 }

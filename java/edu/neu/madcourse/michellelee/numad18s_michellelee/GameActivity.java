@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.RealtimeDatabaseActivity;
@@ -34,15 +36,12 @@ import edu.neu.madcourse.michellelee.numad18s_michellelee.realtimeDatabase.model
 public class GameActivity extends Activity {
     public static final String KEY_RESTORE = "key_restore";
     public static final String PREF_RESTORE = "pref_restore";
-    public static boolean activityVisible = false; // flag to determine whether activity is visible
     private GameFragment mGameFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
-        activityVisible = true; // when activity is started
 
         // restore game here
         mGameFragment = (GameFragment) getFragmentManager().findFragmentById(R.id.fragment_game);
@@ -58,33 +57,18 @@ public class GameActivity extends Activity {
     }
 
     public void restartGame() {
-
-        activityVisible = true; // when activity is started
-
         mGameFragment.restartGame();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        activityVisible = false; // when activity is started
-
         String gameData = mGameFragment.getState();
         getPreferences(MODE_PRIVATE).edit()
                 .putString(PREF_RESTORE, gameData)
                 .commit();
         Log.d("UT3", "state = " + gameData);
+
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        activityVisible = true; // when activity is started
-    }
-
-    public static boolean isActivityVisible() {
-        return activityVisible;
-    }
 }
