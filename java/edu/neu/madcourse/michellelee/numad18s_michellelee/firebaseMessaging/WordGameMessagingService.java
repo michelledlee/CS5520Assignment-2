@@ -1,20 +1,40 @@
 package edu.neu.madcourse.michellelee.numad18s_michellelee.firebaseMessaging;
 
+import android.app.ActionBar;
+import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.PopupWindow;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.List;
+
+import edu.neu.madcourse.michellelee.numad18s_michellelee.GameActivity;
+import edu.neu.madcourse.michellelee.numad18s_michellelee.GameFragment;
 import edu.neu.madcourse.michellelee.numad18s_michellelee.MainActivity;
+import edu.neu.madcourse.michellelee.numad18s_michellelee.PopUpDialog;
 import edu.neu.madcourse.michellelee.numad18s_michellelee.R;
+
 
 public class WordGameMessagingService extends FirebaseMessagingService {
     private static final String TAG = WordGameMessagingService.class.getSimpleName();
@@ -45,19 +65,21 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-//            String title = remoteMessage.getData().get("title");
-//            String message = remoteMessage.getData().get("message");
-//            Intent intent = new Intent("edu.neu.madcourse.michellelee.numad18s_michellelee-FCMMESSAGE");
-//            intent.putExtra("title", title);
-//            intent.putExtra("message", message);
-//            LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-//            localBroadcastManager.sendBroadcast(intent);
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+
+            // detect if app is running/launched
+            ActivityManager activityManager = (ActivityManager) this.getSystemService( ACTIVITY_SERVICE );
+            List<ActivityManager.RunningAppProcessInfo> appInfos = activityManager.getRunningAppProcesses();
+            if (GameFragment.isActive != 0) {
+                Log.e("isactive", Integer.toString(GameFragment.isActive));
+                Intent popUpIntent = new Intent(this, PopUpDialog.class);
+                popUpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(popUpIntent);
+            }
 
             // Note: We happen to be just getting the body of the notification and displaying it.
             // We could also get the title and other info and do different things.
@@ -76,22 +98,34 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+        String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.foo)
-                .setContentTitle("Firebase Message (Mod6)")
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.foo)
+                        .setContentTitle("FCM Message")
+                        .setContentText(messageBody)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+
+
     }
 }
