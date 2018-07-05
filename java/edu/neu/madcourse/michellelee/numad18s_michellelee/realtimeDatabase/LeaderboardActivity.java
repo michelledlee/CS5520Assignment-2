@@ -148,6 +148,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         rankTextView.setTypeface(null, Typeface.BOLD);
         rankTextView.setGravity(Gravity.CENTER);
         leaderboardRank.addHeaderView(rankTextView);
+        leaderboardRank.setScrollContainer(false);
 
         // initialize list view - user name
         leaderboardName = (ListView) findViewById(R.id.leaderboard_name);
@@ -159,6 +160,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         nameTextView.setTypeface(null, Typeface.BOLD);
         nameTextView.setGravity(Gravity.CENTER);
         leaderboardName.addHeaderView(nameTextView);
+        leaderboardName.setScrollContainer(false);
 
         // initialize list view - end score
         leaderboardScore = (ListView) findViewById(R.id.leaderboard_score);
@@ -170,6 +172,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         scoreTextView.setTypeface(null, Typeface.BOLD);
         scoreTextView.setGravity(Gravity.CENTER);
         leaderboardScore.addHeaderView(scoreTextView);
+        leaderboardScore.setScrollContainer(false);
 
         // initialize list view - date
         leaderboardDate = (ListView) findViewById(R.id.leaderboard_date);
@@ -181,6 +184,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         dateTextView.setTypeface(null, Typeface.BOLD);
         dateTextView.setGravity(Gravity.CENTER);
         leaderboardDate.addHeaderView(dateTextView);
+        leaderboardDate.setScrollContainer(false);
 
         // initialize list view - longest word
         leaderboardWord = (ListView) findViewById(R.id.leaderboard_word);
@@ -192,6 +196,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         wordTextView.setTypeface(null, Typeface.BOLD);
         wordTextView.setGravity(Gravity.CENTER);
         leaderboardWord.addHeaderView(wordTextView);
+        leaderboardWord.setScrollContainer(false);
 
         // initialize list view - longest word score
         leaderboardWordScore = (ListView) findViewById(R.id.leaderboard_wordscore);
@@ -203,6 +208,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         wordScoreTextView.setTypeface(null, Typeface.BOLD);
         wordScoreTextView.setGravity(Gravity.CENTER);
         leaderboardWordScore.addHeaderView(wordScoreTextView);
+        leaderboardWordScore.setScrollContainer(false);
 
         // hooking up update button to pull new info from the database
         Button updateButton = (Button) findViewById(R.id.update_leaderboard);

@@ -144,6 +144,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         rankTextView.setTypeface(null, Typeface.BOLD);
         rankTextView.setGravity(Gravity.CENTER);
         leaderboardRank.addHeaderView(rankTextView);
+        leaderboardRank.setScrollContainer(false);
 
         leaderboardName = (ListView) findViewById(R.id.leaderboard_name);   // user name
         itemName = new ArrayList<>();
@@ -154,6 +155,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         nameTextView.setTypeface(null, Typeface.BOLD);
         nameTextView.setGravity(Gravity.CENTER);
         leaderboardName.addHeaderView(nameTextView);
+        leaderboardName.setScrollContainer(false);
 
         leaderboardScore = (ListView) findViewById(R.id.leaderboard_score); // end score
         itemScore = new ArrayList<>();
@@ -164,6 +166,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         scoreTextView.setTypeface(null, Typeface.BOLD);
         scoreTextView.setGravity(Gravity.CENTER);
         leaderboardScore.addHeaderView(scoreTextView);
+        leaderboardScore.setScrollContainer(false);
 
         leaderboardDate = (ListView) findViewById(R.id.leaderboard_date);   // date
         itemDate = new ArrayList<>();
@@ -174,6 +177,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         dateTextView.setTypeface(null, Typeface.BOLD);
         dateTextView.setGravity(Gravity.CENTER);
         leaderboardDate.addHeaderView(dateTextView);
+        leaderboardDate.setScrollContainer(false);
 
         leaderboardWord = (ListView) findViewById(R.id.leaderboard_word);   // longest word
         itemWord = new ArrayList<>();
@@ -184,6 +188,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         wordTextView.setTypeface(null, Typeface.BOLD);
         wordTextView.setGravity(Gravity.CENTER);
         leaderboardWord.addHeaderView(wordTextView);
+        leaderboardWord.setScrollContainer(false);
 
         leaderboardWordScore = (ListView) findViewById(R.id.leaderboard_wordscore); // longest word score
         itemWordScore = new ArrayList<>();
@@ -194,6 +199,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         wordScoreTextView.setTypeface(null, Typeface.BOLD);
         wordScoreTextView.setGravity(Gravity.CENTER);
         leaderboardWordScore.addHeaderView(wordScoreTextView);
+        leaderboardWordScore.setScrollContainer(false);
 
         // HOOKING UP BUTTONS
         Button updateButton = (Button) findViewById(R.id.update_leaderboard2);
