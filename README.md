@@ -1,1 +1,1 @@
-# CS5520WordGameAssignment3
+# Word dictionary lookup app
